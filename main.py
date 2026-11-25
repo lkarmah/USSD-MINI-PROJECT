@@ -13,8 +13,7 @@ class USSDRequest(BaseModel):
     SESSIONID: str = ""
 
 
-# In-memory session store: SESSIONID -> {"step": ..., "feeling": ...}
-# Use Redis or a database in production.
+
 sessions: dict[str, dict] = {}
 
 FEELING = {
@@ -91,3 +90,8 @@ def handle_ussd(req: USSDRequest):
 
     sessions.pop(req.SESSIONID, None)
     return reply(req, "Something went wrong. Please dial again.", False)
+
+
+@app.get("/api/health")
+def health():
+    return{"status": "ok"}
